@@ -1,0 +1,22 @@
+[[labels]]
+name = "label A"
+color = "#ff0000"
+
+[[labels]]
+name = "label B"
+color = "#0000ff"
+
+[template]
+issue = """
+## issue template
+
+awesome issue
+
+"""
+
+pull_request = """
+## pull request template
+
+awesome code
+
+"""

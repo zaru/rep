@@ -16,5 +16,7 @@ func Init() {
 	fmt.Printf("%v", config)
 
 	client := client.NewClient()
-	client.AddLabel()
+	for _, v := range config.Labels {
+		client.AddLabel(v)
+	}
 }

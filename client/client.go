@@ -7,6 +7,8 @@ import (
 	"io/ioutil"
 	"net/http"
 	"os"
+
+	"github.com/zaru/rep/git"
 )
 
 const apiHost = "api.github.com"
@@ -42,10 +44,10 @@ func new() *http.Client {
 	return &http.Client{}
 }
 
-func (client *Client) AddLabel() {
+func (client *Client) AddLabel(label Label) {
 	api := client.api()
-	body := Label{Name: "label B", Description: "description A", Color: "ff0000"}
-	res, err := api.PostJSON("POST", "/repos/zaru/test/labels", body)
+	remote, _ := git.MainRemote()
+	res, err := api.PostJSON("POST", "/repos/"+remote+"/labels", label)
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
 	}

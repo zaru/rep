@@ -1,10 +1,12 @@
 [[labels]]
-name = "label A"
-color = "#ff0000"
+name = "label C"
+color = "ff0000"
+description = "hoge"
 
 [[labels]]
-name = "label B"
-color = "#0000ff"
+name = "label D"
+color = "0000ff"
+description = "fuga"
 
 [template]
 issue = """

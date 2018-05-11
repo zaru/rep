@@ -13,10 +13,11 @@ func Init() {
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
 	}
-	fmt.Printf("%v", config)
 
 	client := client.NewClient()
 	for _, v := range config.Labels {
 		client.AddLabel(v)
 	}
+	client.AddFile("ISSUE_TEMPLATE.md", config.Issue.Template)
+	client.AddFile("PULL_REQUEST_TEMPLATE.md", config.PullRequest.Template)
 }

@@ -2,6 +2,7 @@ package client
 
 import (
 	"bytes"
+	"encoding/base64"
 	"encoding/json"
 	"fmt"
 	"io/ioutil"
@@ -17,13 +18,24 @@ const contentType = "application/json; charset=utf-8"
 const githubApiVer = "application/vnd.github.symmetra-preview+json"
 
 type Config struct {
-	Labels []Label
+	Labels      []Label
+	Issue       Template
+	PullRequest Template `toml:"pull_request"`
 }
 
 type Label struct {
 	Name        string `json:"name"`
 	Description string `json:"description"`
 	Color       string `json:"color"`
+}
+
+type Template struct {
+	Template string
+}
+
+type TemplateFile struct {
+	Message string `json:"message"`
+	Content string `json:"content"`
 }
 
 type apiClient struct {
@@ -48,6 +60,22 @@ func (client *Client) AddLabel(label Label) {
 	api := client.api()
 	remote, _ := git.MainRemote()
 	res, err := api.PostJSON("POST", "/repos/"+remote+"/labels", label)
+	if err != nil {
+		fmt.Errorf("Error: %v", err)
+	}
+	bodyBytes, _ := ioutil.ReadAll(res.Body)
+	bodyString := string(bodyBytes)
+	fmt.Printf("%v", bodyString)
+}
+
+func (client *Client) AddFile(name, template string) {
+	api := client.api()
+	remote, _ := git.MainRemote()
+	file := TemplateFile{
+		Message: "add GitHub template file",
+		Content: base64.StdEncoding.EncodeToString([]byte(template)),
+	}
+	res, err := api.PostJSON("PUT", "/repos/"+remote+"/contents/.github/"+name, file)
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
 	}

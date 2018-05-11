@@ -8,15 +8,16 @@ name = "label D"
 color = "0000ff"
 description = "fuga"
 
-[template]
-issue = """
+[issue]
+template = """
 ## issue template
 
 awesome issue
 
 """
 
-pull_request = """
+[pull_request]
+template = """
 ## pull request template
 
 awesome code

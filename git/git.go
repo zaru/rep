@@ -2,9 +2,38 @@ package git
 
 import (
 	"errors"
+	"fmt"
+	"io/ioutil"
+	"os"
 	"os/exec"
+	"path/filepath"
 	"regexp"
 )
+
+func TemplateCommit() error {
+	error := exec.Command("git", "checkout", "-b", "githum-template").Run()
+	if error != nil {
+		return error
+	}
+	if err := os.Mkdir(".github", 0755); err != nil {
+		fmt.Println(err)
+	}
+	filename := filepath.Join(".github", "ISSUE_TEMPLATE.md")
+	ioutil.WriteFile(filename, []byte("hello world!"), 0644)
+	error = exec.Command("git", "add", ".github").Run()
+	if error != nil {
+		return error
+	}
+	error = exec.Command("git", "commit", "-m", "'add GitHub template'").Run()
+	if error != nil {
+		return error
+	}
+	error = exec.Command("git", "push", "origin", "github-template").Run()
+	if error != nil {
+		return error
+	}
+	return nil
+}
 
 func MainRemote() (string, error) {
 	out, error := exec.Command("git", "remote", "-v").Output()

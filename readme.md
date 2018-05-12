@@ -8,12 +8,12 @@ Write the setting in the TOML file.
 
 ```toml
 [[labels]]
-name = "label A"
+name = "label A 👯"
 color = "ff0000"
 description = "label A is munya munya"
 
 [[labels]]
-name = "label B"
+name = "label B :bug:"
 color = "0000ff"
 description = "label B is wahhoi yahhoi"
 

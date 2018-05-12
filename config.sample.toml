@@ -1,10 +1,10 @@
 [[labels]]
-name = "label C"
+name = "label A 👯"
 color = "ff0000"
 description = "hoge"
 
 [[labels]]
-name = "label D"
+name = "label B :bug:"
 color = "0000ff"
 description = "fuga"
 

@@ -5,7 +5,6 @@ import (
 	"encoding/base64"
 	"encoding/json"
 	"fmt"
-	"io/ioutil"
 	"net/http"
 	"os"
 
@@ -69,13 +68,10 @@ func (client *Client) AddLabel(label Label) {
 		url += "/" + label.Name
 	}
 
-	res, err := api.PostJSON(method, url, label)
+	_, err := api.PostJSON(method, url, label)
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
 	}
-	bodyBytes, _ := ioutil.ReadAll(res.Body)
-	bodyString := string(bodyBytes)
-	fmt.Printf("%v", bodyString)
 }
 
 func (client *Client) AddFile(name, template string) {
@@ -90,13 +86,10 @@ func (client *Client) AddFile(name, template string) {
 		Sha:     sha,
 	}
 
-	res, err := api.PostJSON("PUT", "/repos/"+remote+"/contents/.github/"+name, file)
+	_, err := api.PostJSON("PUT", "/repos/"+remote+"/contents/.github/"+name, file)
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
 	}
-	bodyBytes, _ := ioutil.ReadAll(res.Body)
-	bodyString := string(bodyBytes)
-	fmt.Printf("%v", bodyString)
 }
 
 func (client *Client) LabelExists(name string) bool {

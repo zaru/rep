@@ -36,6 +36,7 @@ type Template struct {
 type TemplateFile struct {
 	Message string `json:"message"`
 	Content string `json:"content"`
+	Sha     string `json:"sha"`
 }
 
 type apiClient struct {
@@ -71,10 +72,15 @@ func (client *Client) AddLabel(label Label) {
 func (client *Client) AddFile(name, template string) {
 	api := client.api()
 	remote, _ := git.MainRemote()
+
+	sha := client.GetShaOfFile(name)
+
 	file := TemplateFile{
 		Message: "add GitHub template file",
 		Content: base64.StdEncoding.EncodeToString([]byte(template)),
+		Sha:     sha,
 	}
+
 	res, err := api.PostJSON("PUT", "/repos/"+remote+"/contents/.github/"+name, file)
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
@@ -84,12 +90,57 @@ func (client *Client) AddFile(name, template string) {
 	fmt.Printf("%v", bodyString)
 }
 
+func (client *Client) GetShaOfFile(name string) string {
+	res := client.GetFile(name)
+	if res == nil {
+		return ""
+	}
+	var result struct {
+		Sha string `json:"sha"`
+	}
+	if err := json.NewDecoder(res.Body).Decode(&result); err != nil {
+		fmt.Errorf("Error: %v", err)
+	}
+	return result.Sha
+}
+
+func (client *Client) GetFile(name string) *apiResponse {
+	api := client.api()
+	remote, _ := git.MainRemote()
+	res, err := api.Get("/repos/" + remote + "/contents/.github/" + name)
+	if err != nil {
+		fmt.Errorf("Error: %v", err)
+	}
+	if res.StatusCode == 404 {
+		return nil
+	}
+	return res
+}
+
 func (client *Client) api() *apiClient {
 	httpClient := new()
 	return &apiClient{
 		httpClient:  httpClient,
 		AccessToken: client.token(),
 	}
+}
+
+func (api *apiClient) Get(url string) (res *apiResponse, err error) {
+	req, err := http.NewRequest("GET", "https://"+apiHost+url, nil)
+	if err != nil {
+		return
+	}
+	req.Header.Set("User-Agent", userAgent)
+	req.Header.Set("Authorization", "token "+api.AccessToken)
+	req.Header.Set("Content-Type", contentType)
+	req.Header.Set("Accept", githubApiVer)
+	httpResponse, err := api.httpClient.Do(req)
+	if err != nil {
+		return
+	}
+
+	res = &apiResponse{httpResponse}
+	return
 }
 
 func (api *apiClient) PostJSON(method, url string, body interface{}) (res *apiResponse, err error) {

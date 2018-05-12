@@ -18,6 +18,10 @@ func Init(filePath string) {
 	for _, v := range config.Labels {
 		client.AddLabel(v)
 	}
-	client.AddFile("ISSUE_TEMPLATE.md", config.Issue.Template)
-	client.AddFile("PULL_REQUEST_TEMPLATE.md", config.PullRequest.Template)
+	if len(config.Issue.Template) > 0 {
+		client.AddFile("ISSUE_TEMPLATE.md", config.Issue.Template)
+	}
+	if len(config.PullRequest.Template) > 0 {
+		client.AddFile("PULL_REQUEST_TEMPLATE.md", config.PullRequest.Template)
+	}
 }

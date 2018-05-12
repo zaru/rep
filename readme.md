@@ -43,6 +43,7 @@ brew upgrade zaru/rep/rep
 ## Usage
 
 ```
+export GITHUB_TOKEN=<personal access token>
 cd ~/git_project_dir
 rep init --config config.toml
 ```

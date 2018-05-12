@@ -1,0 +1,26 @@
+builds:
+  - binary: rep
+    goos:
+      - darwin
+    goarch:
+      - amd64
+  - binary: rep
+    main: main.go
+    goos:
+      - darwin
+    goarch:
+      - amd64
+brew:
+  github:
+    owner: zaru
+    name: homebrew-rep
+  commit_author:
+    name: zaru
+    email: zarutofu@gmail.com
+  description: "Initializes the GitHub repository. Labels and templates for Issue/PR."
+  homepage: "https://github.com/zaru/rep"
+  dependencies:
+  install: |
+    bin.install 'rep'
+  test: |
+    system "#{bin}/rep"

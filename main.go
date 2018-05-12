@@ -11,11 +11,11 @@ func main() {
 	app := cli.NewApp()
 	app.Name = "rep"
 	app.Usage = "Initial setting of GitHub repository"
-	app.Version = "0.1.0"
+	app.Version = "0.1.1"
 	app.Commands = []cli.Command{
 		{
 			Name:  "init",
-			Usage: "rep init ./config.json / initialize to GitHub repository",
+			Usage: "rep init --config ./config.json <initialize to current GitHub repository>",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "config, c",

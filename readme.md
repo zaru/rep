@@ -1,7 +1,5 @@
 # rep
 
-**It's still under development.**
-
 The `rep` command initializes the GitHub repository. Create labels and Issue and Pull-Request templates.
 
 Write the setting in the TOML file.
@@ -34,9 +32,17 @@ awesome code
 """
 ```
 
+## Install
+
+```
+brew install zaru/rep/rep
+
+brew upgrade zaru/rep/rep
+```
+
 ## Usage
 
 ```
 cd ~/git_project_dir
-rep init
+rep init --config config.toml
 ```

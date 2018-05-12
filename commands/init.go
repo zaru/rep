@@ -7,9 +7,9 @@ import (
 	"github.com/zaru/rep/client"
 )
 
-func Init() {
+func Init(filePath string) {
 	var config client.Config
-	_, err := toml.DecodeFile("./config.sample.toml", &config)
+	_, err := toml.DecodeFile(filePath, &config)
 	if err != nil {
 		fmt.Errorf("Error: %v", err)
 	}

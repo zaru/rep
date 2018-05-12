@@ -16,8 +16,15 @@ func main() {
 		{
 			Name:  "init",
 			Usage: "rep init ./config.json / initialize to GitHub repository",
+			Flags: []cli.Flag{
+				cli.StringFlag{
+					Name:  "config, c",
+					Value: "config.toml",
+					Usage: "Specify the configuration file path",
+				},
+			},
 			Action: func(c *cli.Context) error {
-				commands.Init()
+				commands.Init(c.String("config"))
 				return nil
 			},
 		},

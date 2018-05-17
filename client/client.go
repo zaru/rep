@@ -7,6 +7,7 @@ import (
 	"fmt"
 	"net/http"
 	"os"
+	"io/ioutil"
 
 	"github.com/zaru/rep/git"
 )
@@ -183,6 +184,17 @@ func (api *apiClient) PostJSON(method, url string, body interface{}) (res *apiRe
 	httpResponse, err := api.httpClient.Do(req)
 	if err != nil {
 		return
+	}
+
+	status := httpResponse.StatusCode
+	b, err := ioutil.ReadAll(httpResponse.Body)
+	if err != nil {
+		return
+	}
+	if status >= 200 && status <= 299 {
+		return
+	} else {
+		fmt.Println(string(b))
 	}
 
 	res = &apiResponse{httpResponse}

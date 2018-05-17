@@ -15,7 +15,7 @@ func main() {
 	app.Commands = []cli.Command{
 		{
 			Name:  "init",
-			Usage: "rep init --config ./config.json <initialize to current GitHub repository>",
+			Usage: "rep init --config ./config.toml <initialize to current GitHub repository>",
 			Flags: []cli.Flag{
 				cli.StringFlag{
 					Name:  "config, c",
